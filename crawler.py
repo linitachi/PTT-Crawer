@@ -111,9 +111,12 @@ class PTTCrawler:
         if(title[1] != '賣'):  # 如果不是賣 就返回0
             return 0
         date = metas[2].select('span.article-meta-value')[0].string
-        price = content[number_start+5:number_end]
+        price = content[number_start + 5:number_end]
         link = main_content.select_one("span.f2 a")
-        data = [[author, date, title.lower(), price, link.text]]
+        try:
+            data = [[author, date, title.lower(), price, link.text]]
+        except:
+            data = [[author, date, title.lower(), price, "??"]]
         return data
 
 
