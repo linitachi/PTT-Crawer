@@ -51,12 +51,9 @@ class PTTCrawler:
             controls = html.find('.action-bar a.btn.wide')
             link = controls[1].attrs.get('href')
             return urllib.parse.urljoin(self.domain, link)
-
         resp = self.fetch(url)
-        post_entries = self.parse_article_entries(resp.text)
         next_link = parse_next_link(resp.text)
-
-        metadata = [self.parse_article_meta(entry) for entry in post_entries]
+        metadata = self.transferto_Metadata(resp)
         return metadata, next_link
 
     def get_paged_meta(self, url, num_pages):
@@ -79,3 +76,12 @@ class PTTCrawler:
         with Pool(processes=16) as pool:
             contents = pool.map(self.fetch, post_links)
             return contents
+
+    def transferto_Metadata(self, resp):
+        '''
+        把結果轉成可讀的內容
+        :param resp 網站的回應
+        '''
+        post_entries = self.parse_article_entries(resp.text)
+        metadata = [self.parse_article_meta(entry) for entry in post_entries]
+        return metadata
