@@ -10,6 +10,8 @@ from datetime import datetime
 
 
 class PTTCrawler:
+    domain = 'https://www.ptt.cc/'
+
     def __init__(self):
         self.domain = 'https://www.ptt.cc/'
 
@@ -90,13 +92,16 @@ class PTTCrawler:
         return metadata
 
     def get_page_content(self, response):
-        # 取得頁面的資料
+        '''
+        取得頁面的資料
+        如果回傳0代表不是賣的人
+        '''
         soup = BeautifulSoup(response.text, 'lxml')
         main_content = soup.find(id="main-content")
         metas = main_content.select('div.article-metaline')
-        contentt = main_content.text
-        number_start = contentt.find(u'欲售價格' or u'交易價格')
-        number_end = contentt.find(u'\n', number_start)
+        content = main_content.text
+        number_start = content.find(u'欲售價格' or u'交易價格')
+        number_end = content.find(u'\n', number_start)
         try:
             author = metas[0].select('span.article-meta-value')[0].string
             title = metas[1].select('span.article-meta-value')[0].string
@@ -106,9 +111,9 @@ class PTTCrawler:
         if(title[1] != '賣'):  # 如果不是賣 就返回0
             return 0
         date = metas[2].select('span.article-meta-value')[0].string
-        price = contentt[number_start+5:number_end]
-
-        data = [[author, date, title.lower(), price]]
+        price = content[number_start+5:number_end]
+        link = main_content.select_one("span.f2 a")
+        data = [[author, date, title.lower(), price, link.text]]
         return data
 
 
