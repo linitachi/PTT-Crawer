@@ -22,7 +22,7 @@ class Search(PTTCrawler):
         '''
         return self.transferto_Metadata(self.requestResp(url, keyword, page))
 
-    def search_for_author(self, url, keyword=''):
+    def search_for_author(self, url, keyword='', page=1):
         '''
         :param url 個版的網址
         :param keyword 想搜尋的作者
