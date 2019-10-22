@@ -29,12 +29,3 @@ class Search(PTTCrawler):
         '''
         keyword = 'author:'+keyword
         return self.transferto_Metadata(self.requestResp(url, keyword, page))
-
-    # def search_for_date(self, url, keyword=''):
-    #     '''
-    #     :param url 個版的網址
-    #     :param keyword 想搜尋的時間
-    #     '''
-    #     if keyword == '':
-    #         localtime = time.localtime(time.time())
-    #         keyword = str(localtime.tm_mon) + '/' + str(localtime.tm_mday)

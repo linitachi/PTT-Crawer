@@ -4,6 +4,9 @@ import re
 import time
 import urllib
 from multiprocessing import Pool
+from bs4 import BeautifulSoup
+import csv
+from datetime import datetime
 
 
 class PTTCrawler:
@@ -85,3 +88,34 @@ class PTTCrawler:
         post_entries = self.parse_article_entries(resp.text)
         metadata = [self.parse_article_meta(entry) for entry in post_entries]
         return metadata
+
+    def get_page_content(self, response):
+        # 取得頁面的資料
+        soup = BeautifulSoup(response.text, 'lxml')
+        main_content = soup.find(id="main-content")
+        metas = main_content.select('div.article-metaline')
+        contentt = main_content.text
+        number_start = contentt.find(u'欲售價格' or u'交易價格')
+        number_end = contentt.find(u'\n', number_start)
+        try:
+            author = metas[0].select('span.article-meta-value')[0].string
+            title = metas[1].select('span.article-meta-value')[0].string
+        except IndexError as n:
+            author = '??'
+            title = '??'
+        if(title[1] != '賣'):  # 如果不是賣 就返回0
+            return 0
+        date = metas[2].select('span.article-meta-value')[0].string
+        price = contentt[number_start+5:number_end]
+
+        data = [[author, date, title.lower(), price]]
+        return data
+
+
+if __name__ == '__main__':
+    aaa = PTTCrawler()
+    start_url = 'https://www.ptt.cc/bbs/mobilesales/index.html'
+    metadata = aaa.get_paged_meta(start_url, 1)
+    resps = aaa.get_posts(metadata)
+    for reaa in resps:
+        bbb = aaa.get_page_content(reaa)
