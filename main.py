@@ -5,8 +5,9 @@ import search
 import crawler_process
 if __name__ == '__main__':
     pages = 2
+    csvTitle = 'index.csv'
     start = time.time()
-    Processor = crawler_process.CrawlerProcessor('index.csv')
+    Processor = crawler_process.CrawlerProcessor(csvTitle)
 
     # 如果要存全部檔案
     # start_url = 'https://www.ptt.cc/bbs/mobilesales/index.html'
