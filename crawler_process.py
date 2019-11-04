@@ -10,6 +10,7 @@ class CrawlerProcessor(PTTCrawler):
         self.__Search = search.Search()
 
     def saveAll(self, start_url, pages):
+        # save all item
         metadata = self.get_paged_meta(start_url, num_pages=pages)
         resps = self.get_posts(metadata)
         for resp in resps:
@@ -18,6 +19,7 @@ class CrawlerProcessor(PTTCrawler):
                 self.__Savecsv.savetocsv(data)
 
     def saveKeyword(self, start_url, pages, keyword):
+        # save certain item by keyword
         metadata = self.__Search.search_for_keyword(
             start_url, keyword=keyword, page=pages)
         resps = self.get_posts(metadata)

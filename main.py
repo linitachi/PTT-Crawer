@@ -14,9 +14,5 @@ if __name__ == '__main__':
 
     # 如果要存特定關鍵字檔案
     start_url = 'https://www.ptt.cc/bbs/mobilesales/'
-    Processor.saveKeyword(start_url, pages, 'sony')
+    Processor.saveKeyword(start_url, pages, 'u11')
     print('花費: %f 秒' % (time.time() - start))
-    # metadata = searchItem.search_for_keyword(
-    #     "https://www.ptt.cc/bbs/movie", '三')
-    # metadata = searchItem.search_for_author(
-    #     "https://www.ptt.cc/bbs/movie", 'Tsai07')
